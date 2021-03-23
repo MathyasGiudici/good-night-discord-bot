@@ -1,0 +1,32 @@
+{
+  "name": "good-night-discord-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./src/good-night.js",
+    "dev": "nodemon ./src/good-night.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MathyasGiudici/good-night-discord-bot.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MathyasGiudici/good-night-discord-bot/issues"
+  },
+  "homepage": "https://github.com/MathyasGiudici/good-night-discord-bot#readme",
+  "dependencies": {
+    "discord.js": "^12.5.1",
+    "dotenv": "^8.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.22.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1"
+  }
+}
