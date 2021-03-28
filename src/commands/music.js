@@ -6,7 +6,14 @@ module.exports = {
 	args: ['youtubelink'],
 	guildOnly: true,
 	async execute(message, args) {
+		// Join the same voice channel of the author of the message
+		if (!message.member.voice.channel) {
+			return message.reply('I can\'t play that command! You must be in a Voice Channel');
+		}
+
 		const voiceChannel = await playFromYoutube(message, args[0]);
-		voiceChannel.leave();
+
+		try { voiceChannel.leave(); }
+		catch (error) { return; }
 	},
 };

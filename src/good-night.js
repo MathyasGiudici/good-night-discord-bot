@@ -48,12 +48,12 @@ client.on('message', (message) => {
 			return message.reply(`${message.author}, I can't execute that command inside DMs!`);
 		}
 
-		// Checking args number
-		if(cmd.args.length !== args.length) {
-			return message.reply(`I can't execute that command! I need all the arguments ${cmd.args.toString()}`);
+		// Checking obligatory args number
+		if(!(args.length >= cmd.args.length)) {
+			return message.reply(`I can't execute that command! I need all the mandatory arguments:\n ${config.prefix}${cmd.name} ${cmd.args.toString().replace(/,/g, ' ')}`);
 		}
 
-		// Calling the command
+		// Calling the
 		cmd.execute(message, args);
 	}
 	catch (error) {

@@ -20,11 +20,17 @@ const night = async function(message) {
 module.exports = {
 	name: 'night',
 	description: 'Set the time when a Voice Channel should go to bed',
-	args: ['Hour', 'Time', 'isTomorrow?'],
+	args: ['hour', 'minutes', 'isTomorrow'],
 	guildOnly: true,
 	async execute(message, args) {
 		const timer = new Date();
 
+		// Checking that the user is in a Voice Channel
+		if (!message.member.voice.channel) {
+			return message.reply('I can\'t play that command! You must be in a Voice Channel');
+		}
+
+		// Checking the date to refer to
 		if(args[2].toLowerCase() === 'yes' || args[2].toLowerCase() === 'y') {
 			timer.setDate(timer.getDate() + 1);
 		}
