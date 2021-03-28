@@ -5,16 +5,18 @@ const playFromYoutube = require('../utils/yt-player');
 const night = async function(message) {
 	const voiceChannel = await playFromYoutube(message, config['night-song']);
 
-	// Kicking people
-	voiceChannel.members.each((member) => {
-		try {
+	if(voiceChannel) {
+		// Kicking people
+		voiceChannel.members.each((member) => {
+			try {
 			// kick the member
-			member.voice.setChannel(null);
-		}
-		catch (error) {
-			console.log(error);
-		}
-	});
+				member.voice.setChannel(null);
+			}
+			catch (error) {
+				console.log(error);
+			}
+		});
+	}
 };
 
 module.exports = {
@@ -27,7 +29,7 @@ module.exports = {
 
 		// Checking that the user is in a Voice Channel
 		if (!message.member.voice.channel) {
-			return message.reply('I can\'t play that command! You must be in a Voice Channel');
+			return message.reply('I can\'t play that command! You must be in a Voice Channel.');
 		}
 
 		// Checking the date to refer to

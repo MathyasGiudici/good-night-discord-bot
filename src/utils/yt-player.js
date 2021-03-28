@@ -7,6 +7,11 @@ const playFromYoutube = async function(message, youtubeVideo) {
 
 	// Promise player
 	const playerPromise = new Promise(function(resolve, reject) {
+		if (!message.member.voice.channel.joinable) {
+			message.reply('I cannot join the channel, you have to add my role!');
+			return undefined;
+		}
+
 		message.member.voice.channel.join().then(async (connection) => {
 			const stream = ytdl(youtubeVideo, { filter: 'audioonly' })
 				.on('error', e => {

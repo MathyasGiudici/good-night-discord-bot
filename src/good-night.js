@@ -8,6 +8,9 @@ const { Client, Collection } = require('discord.js');
 // Importing config
 const config = require('./files/config.json');
 
+// Importing role helper
+const roleHelper = require('./utils/role-helper');
+
 // Client and command list creation
 const client = new Client();
 client.commands = new Collection();
@@ -27,7 +30,7 @@ client.on('ready', () => {
 });
 
 // Checking messages
-client.on('message', (message) => {
+client.on('message', async (message) => {
 	// Checking the prefix
 	if (!message.content.startsWith(config.prefix) || message.author.bot) return;
 
@@ -43,9 +46,14 @@ client.on('message', (message) => {
 		// Getting the command
 		const cmd = client.commands.get(command);
 
-		// Checking no direct messages
-		if (cmd.guildOnly && message.channel.type === 'dm') {
-			return message.reply(`${message.author}, I can't execute that command inside DMs!`);
+		const check = await roleHelper(message);
+
+		// Checking no direct messages and roles
+		if (message.channel.type === 'dm') {
+			if (cmd.guildOnly) return message.reply('I can\'t execute that command inside DMs!');
+		}
+		else if (!message.member.hasPermission('ADMINISTRATOR') && !check) {
+			return message.reply('You can\'t execute that command! Ask the administrator to enable your role.');
 		}
 
 		// Checking obligatory args number
