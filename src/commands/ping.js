@@ -1,6 +1,6 @@
 module.exports = {
 	name: 'ping',
-	description: 'Ping!',
+	description: 'Test command: Ping!',
 	args: [],
 	guildOnly: true,
 	execute(message, args) {

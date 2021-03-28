@@ -1,10 +1,12 @@
-// Importing
+// Importing env
 require('dotenv').config();
 
+// Importing packages
 const fs = require('fs');
 const { Client, Collection } = require('discord.js');
 
-const config = require('./utils/config.json');
+// Importing config
+const config = require('./files/config.json');
 
 // Client and command list creation
 const client = new Client();
@@ -13,15 +15,18 @@ client.commands = new Collection();
 // Loading commands
 const commandFiles = fs.readdirSync('./src/commands').filter((file) => file.endsWith('.js'));
 
+// Parsing commands
 commandFiles.forEach((value) => {
 	const command = require(`./commands/${value}`);
 	client.commands.set(command.name, command);
 });
 
+// Logging ready of the bot
 client.on('ready', () => {
 	console.log(`${client.user.username} has logged in`);
 });
 
+// Checking messages
 client.on('message', (message) => {
 	// Checking the prefix
 	if (!message.content.startsWith(config.prefix) || message.author.bot) return;
@@ -35,14 +40,20 @@ client.on('message', (message) => {
 
 	// Trying to call the command
 	try {
+		// Getting the command
 		const cmd = client.commands.get(command);
+
+		// Checking no direct messages
 		if (cmd.guildOnly && message.channel.type === 'dm') {
 			return message.reply(`${message.author}, I can't execute that command inside DMs!`);
 		}
+
+		// Checking args number
 		if(cmd.args.length !== args.length) {
 			return message.reply(`I can't execute that command! I need all the arguments ${cmd.args.toString()}`);
 		}
 
+		// Calling the command
 		cmd.execute(message, args);
 	}
 	catch (error) {

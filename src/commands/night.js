@@ -1,5 +1,5 @@
 /* eslint-disable no-unreachable */
-const config = require('../utils/config.json');
+const config = require('../files/config.json');
 const playFromYoutube = require('../utils/yt-player');
 
 const night = async function(message) {
@@ -19,8 +19,8 @@ const night = async function(message) {
 
 module.exports = {
 	name: 'night',
-	description: 'Set time to go to bed',
-	args: ['hour', 'time', 'tomorrow'],
+	description: 'Set the time when a Voice Channel should go to bed',
+	args: ['Hour', 'Time', 'isTomorrow?'],
 	guildOnly: true,
 	async execute(message, args) {
 		const timer = new Date();
