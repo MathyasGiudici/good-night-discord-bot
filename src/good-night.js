@@ -9,7 +9,7 @@ const { Client, Collection } = require('discord.js');
 const config = require('./files/config.json');
 
 // Importing server to keep alive
-const keepAlive = require('./utils/server');
+const keepAlive = require('./server');
 
 // Importing role helper
 const roleHelper = require('./utils/role-helper');
