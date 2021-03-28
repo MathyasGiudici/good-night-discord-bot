@@ -8,6 +8,9 @@ const { Client, Collection } = require('discord.js');
 // Importing config
 const config = require('./files/config.json');
 
+// Importing server to keep alive
+const keepAlive = require('./utils/server');
+
 // Importing role helper
 const roleHelper = require('./utils/role-helper');
 
@@ -70,4 +73,5 @@ client.on('message', async (message) => {
 	}
 });
 
+keepAlive();
 client.login(process.env.DISCORD_BOT_TOKEN);
