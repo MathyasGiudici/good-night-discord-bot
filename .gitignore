@@ -102,5 +102,12 @@ dist
 
 # TernJS port file
 .tern-port
+
+# Apple File
 .DS_Store
+
+# Package
 package-lock.json
+
+# Database file
+src/files/db.json
