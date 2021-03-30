@@ -1,29 +1,26 @@
-const roleChecker = require('./role-checker');
+const roleHelper = function(message) {
 
-const roleHelper = async function(message) {
+	let hasPermission = false;
+	// Checking bot roles availabilty
+	if(message.guild.available) {
+		// Mapping bot's roles name
+		const botRoles = message.guild.me.roles.cache.map(role => role.name);
+		// Removing the everyone
+		if(botRoles.indexOf('@everyone')) botRoles.splice(botRoles.indexOf('@everyone'), 1);
 
-	let target = 0;
+		if(message.member.roles.cache.array().lenght !== 0) {
+			// Mapping user's roles name
+			const userRoles = message.member.roles.cache.map(role => role.name);
+			// Removing the everyone
+			if(userRoles.indexOf('@everyone')) userRoles.splice(botRoles.indexOf('@everyone'), 1);
 
-	// Checking the role
-	const promise = new Promise ((res, rej) =>{
-		// Check if the array is empty
-		if(message.member.roles.cache.array().lenght == 0) {res();}
+			userRoles.forEach(element => {
+				if(botRoles.includes(element)) hasPermission = true;
+			});
+		}
+	}
 
-		// Looking at roles
-		message.member.roles.cache.each(async (element) => {
-			const result = await roleChecker(element.name);
-			if(result) {
-				target++;
-				res();
-			}
-			else if(message.member.roles.cache.last() == element) {res();}
-		});
-	});
-
-	await promise;
-
-	if(target === 0) return false;
-	else return true;
+	return hasPermission;
 };
 
 module.exports = roleHelper;

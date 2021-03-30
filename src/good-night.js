@@ -33,7 +33,7 @@ client.on('ready', () => {
 });
 
 // Checking messages
-client.on('message', async (message) => {
+client.on('message', (message) => {
 	// Checking the prefix
 	if (!message.content.startsWith(config.prefix) || message.author.bot) return;
 
@@ -49,7 +49,7 @@ client.on('message', async (message) => {
 		// Getting the command
 		const cmd = client.commands.get(command);
 
-		const check = await roleHelper(message);
+		const check = roleHelper(message);
 
 		// Checking no direct messages and roles
 		if (message.channel.type === 'dm') {
