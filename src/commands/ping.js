@@ -4,6 +4,6 @@ module.exports = {
 	args: [],
 	guildOnly: true,
 	execute(message, args) {
-		message.channel.send('Pong.');
+		if (message.client) message.channel.send(`Pong (${message.client.ws.ping}ms).`);
 	},
 };
