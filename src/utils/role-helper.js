@@ -2,7 +2,7 @@ const roleHelper = function(message) {
 
 	let hasPermission = false;
 	// Checking bot roles availabilty
-	if(message.guild.available) {
+	if(message.guild && message.guild.available) {
 		// Mapping bot's roles name
 		const botRoles = message.guild.me.roles.cache.map(role => role.name);
 		// Removing the everyone

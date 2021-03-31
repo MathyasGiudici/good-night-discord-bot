@@ -1,4 +1,4 @@
-/* eslint-disable no-unreachable */
+const moment = require('moment-timezone');
 const config = require('../files/config.json');
 const playFromYoutube = require('../utils/yt-player');
 
@@ -25,44 +25,38 @@ module.exports = {
 	args: ['hour', 'minutes', 'isTomorrow'],
 	guildOnly: true,
 	async execute(message, args) {
-		const timer = new Date();
-
 		// Checking that the user is in a Voice Channel
 		if (!message.member.voice.channel) {
 			return message.reply('I can\'t play that command! You must be in a Voice Channel.');
 		}
 
-		// Checking the date to refer to
-		if(args[2].toLowerCase() === 'yes' || args[2].toLowerCase() === 'y') {
-			timer.setDate(timer.getDate() + 1);
-		}
-
 		// Setting hour and minutes
 		const hour = parseInt(args[0]);
-		if (hour >= 0 && hour <= 23) {
-			timer.setHours(hour);
-		}
-		else {
+		if (!(hour >= 0 && hour <= 23)) {
 			message.channel.send('Insert a hour with a range from 0 to 23');
 		}
+
 		const min = parseInt(args[1]);
-		if (min >= 0 && min <= 59) {
-			timer.setMinutes(min);
-		}
-		else {
+		if (!(min >= 0 && min <= 59)) {
 			message.channel.send('Insert minutes with a range from 0 to 59');
 		}
-		timer.setSeconds(0);
-		timer.setMilliseconds(0);
 
-		let trigger = new Date();
-		trigger = new Date(trigger.getTime() + config['night-milliseconds']);
-		if(trigger < timer) {
+		// Checking the date to refer to
+		const isTomorrow = args[2].toLowerCase() === 'yes' || args[2].toLowerCase() === 'y';
+
+		// Creating timer
+		const timer = moment().tz('Europe/Rome').hours(hour).minutes(min).seconds(0).milliseconds(0).add(isTomorrow ? 1 : 0, 'days');
+
+		// Creating trigger
+		const trigger = moment().tz('Europe/Rome').add(config['night-milliseconds'], 'milliseconds');
+
+		// Checking the timer and trigger
+		if(trigger <= timer) {
 			// Setting the timer
 			setTimeout(() => {
 				// Function at the timer stop
 				night(message);
-			}, timer - Date.now() - config['night-milliseconds']);
+			}, timer - trigger);
 
 			message.channel.send('Good night saved!');
 		}

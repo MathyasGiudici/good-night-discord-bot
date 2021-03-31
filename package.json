@@ -28,6 +28,7 @@
     "ffmpeg-static": "^4.2.8",
     "keyv": "^4.0.3",
     "keyv-file": "^0.2.0",
+    "moment-timezone": "^0.5.33",
     "ytdl-core": "^4.5.0"
   },
   "devDependencies": {
