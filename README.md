@@ -8,7 +8,7 @@
 Just set the time and minutes, the bot will enter the call, say good night and disconnect everyone.
 
 ## Invite Link
-To add the bot in your server use the [invite link](https://discord.com/oauth2/authorize?client_id=825800662352396320&scope=bot&permissions=53611776)
+To add the bot in your server use the [invite link](https://bit.ly/39xq4xd)
 
 ## Commands
 Once the bot is imported, it will only respond to commands invoked by the server admin.
