@@ -7,7 +7,12 @@
 **Good Night**, the discord bot for saying good night to your friends in voice chat.
 Just set the time and minutes, the bot will enter the call, say good night and disconnect everyone.
 
+## Invite Link
+To add the bot in your server use the [invite link](https://discord.com/oauth2/authorize?client_id=825800662352396320&scope=bot&permissions=53611776)
+
 ## Commands
+Once the bot is imported, it will only respond to commands invoked by the server admin.
+To get other users to interact, assign the bot the role of the group you want it to interact with.
 
 ### Command !night
 Set the time when a Voice Channel should go to bed:
