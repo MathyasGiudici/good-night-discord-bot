@@ -43,3 +43,4 @@ Stopping music in the Voice Channel:
 
 ## Changelog
 - 1.1.0: Partial resolution (static song loading) of $night and its override
+- 1.1.1: $version command
