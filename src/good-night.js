@@ -30,6 +30,9 @@ commandFiles.forEach((value) => {
 // Logging ready of the bot
 client.on('ready', () => {
 	console.log(`${client.user.username} has logged in`);
+
+	// Client status
+	client.user.setActivity(`${config.prefix}night`, { type: 'LISTENING' });
 });
 
 // Checking messages
