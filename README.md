@@ -39,8 +39,7 @@ Stopping music in the Voice Channel:
 
 ## Community | TODOs
 - [ ] Problem with the usage of [node-ytdl-core](https://github.com/fent/node-ytdl-core/issues/635)
-- [ ] Implement $night override
 - [ ] When using youtube, if the $music command is launched during the $night execution, it skips
 
 ## Changelog
-- 1.1.0: Partial resolution (static song loading) of $ night
+- 1.1.0: Partial resolution (static song loading) of $night and its override
