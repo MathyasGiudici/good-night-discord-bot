@@ -1,6 +1,7 @@
 {
     "prefix": "$",
     "night-song": "https://www.youtube.com/watch?v=XBOu8mind7U",
+    "night-file": "song.mp3",
     "night-milliseconds": 88000,
     "prefix-roles-db": "role:"
 }

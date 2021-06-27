@@ -1,9 +1,9 @@
 const moment = require('moment-timezone');
-const config = require('../files/config.json');
-const playFromFile = require('../utils/file-player');
+const config = require('../../files/config.json');
+const playFromYoutube = require('../../utils/yt-player');
 
 const night = async function(message) {
-	const voiceChannel = await playFromFile(message, config['night-file']);
+	const voiceChannel = await playFromYoutube(message, config['night-song']);
 
 	if(voiceChannel) {
 		// Kicking people

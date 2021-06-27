@@ -29,9 +29,9 @@ commandFiles.forEach((value) => {
 
 // Logging ready of the bot
 client.on('ready', () => {
+	// Logs
 	console.log(`${client.user.username} has logged in`);
-
-	// Client status
+	// Client activity
 	client.user.setActivity(`${config.prefix}night`, { type: 'LISTENING' });
 });
 
