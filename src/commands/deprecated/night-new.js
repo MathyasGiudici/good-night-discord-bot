@@ -1,9 +1,13 @@
 const moment = require('moment-timezone');
-const config = require('../../files/config.json');
-const playFromYoutube = require('../../utils/yt-player');
+const config = require('../files/config.json');
+const playFromFile = require('../utils/file-player');
+
+// Variable to manage night time
+let _timerRoutineID = null;
 
 const night = async function(message) {
-	const voiceChannel = await playFromYoutube(message, config['night-song']);
+	_timerRoutineID = null;
+	const voiceChannel = await playFromFile(message, config['night-file']);
 
 	if(voiceChannel) {
 		// Kicking people
@@ -52,8 +56,15 @@ module.exports = {
 
 		// Checking the timer and trigger
 		if(trigger <= timer) {
+
+			if(_timerRoutineID != null) {
+				clearTimeout(_timerRoutineID);
+				_timerRoutineID = null;
+				message.channel.send('Previous "Good night" deleted!');
+			}
+
 			// Setting the timer
-			setTimeout(() => {
+			_timerRoutineID = setTimeout(() => {
 				// Function at the timer stop
 				night(message);
 			}, timer - trigger);

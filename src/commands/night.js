@@ -1,13 +1,14 @@
+const ytdl = require('ytdl-core');
 const moment = require('moment-timezone');
 const config = require('../files/config.json');
-const playFromFile = require('../utils/file-player');
+const playFromYoutube = require('../utils/yt-player');
 
 // Variable to manage night time
 let _timerRoutineID = null;
 
 const night = async function(message) {
 	_timerRoutineID = null;
-	const voiceChannel = await playFromFile(message, config['night-file']);
+	const voiceChannel = await playFromYoutube(message, config['night-song']);
 
 	if(voiceChannel) {
 		// Kicking people
@@ -51,8 +52,12 @@ module.exports = {
 		// Creating timer
 		const timer = moment().tz('Europe/Rome').hours(hour).minutes(min).seconds(0).milliseconds(0).add(isTomorrow ? 1 : 0, 'days');
 
+		// Computing milliseconds
+		const info = await ytdl.getInfo(config['night-song']);
+		const millisec = info.videoDetails.lengthSeconds * 1000;
+
 		// Creating trigger
-		const trigger = moment().tz('Europe/Rome').add(config['night-milliseconds'], 'milliseconds');
+		const trigger = moment().tz('Europe/Rome').add(millisec, 'milliseconds');
 
 		// Checking the timer and trigger
 		if(trigger <= timer) {
@@ -72,7 +77,7 @@ module.exports = {
 			message.channel.send('Good night saved!');
 		}
 		else {
-			message.channel.send('Date must be in the future of at least 2 minutes!');
+			message.channel.send(`Date must be in the future of at least ${Math.floor((millisec / 60000) + 1)} minutes!`);
 		}
 	},
 };
