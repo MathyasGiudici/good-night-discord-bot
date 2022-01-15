@@ -19,7 +19,9 @@ const client = new Client();
 client.commands = new Collection();
 
 // Loading commands
-const commandFiles = fs.readdirSync('./src/commands').filter((file) => file.endsWith('.js'));
+const commandFiles = fs
+	.readdirSync('./src/commands')
+	.filter((file) => file.endsWith('.js'));
 
 // Parsing commands
 commandFiles.forEach((value) => {
@@ -29,8 +31,12 @@ commandFiles.forEach((value) => {
 
 // Logging ready of the bot
 client.on('ready', () => {
-	// Logs
-	console.log(`${client.user.username} has logged in`);
+	// Logging the list of servers the bot is connected to
+	console.log(`Connected to ${client.guilds.cache.size} servers`);
+	for(const guild of client.guilds.cache.values()) {
+		console.log(`Connected to ${guild.name}`);
+	}
+
 	// Client activity
 	client.user.setActivity(`${config.prefix}night`, { type: 'LISTENING' });
 });
@@ -56,15 +62,21 @@ client.on('message', (message) => {
 
 		// Checking no direct messages and roles
 		if (message.channel.type === 'dm') {
-			if (cmd.guildOnly) return message.reply('I can\'t execute that command inside DMs!');
+			if (cmd.guildOnly) {return message.reply('I can\'t execute that command inside DMs!');}
 		}
 		else if (!message.member.hasPermission('ADMINISTRATOR') && !check) {
-			return message.reply('You can\'t execute that command! Ask the administrator to enable your role.');
+			return message.reply(
+				'You can\'t execute that command! Ask the administrator to enable your role.',
+			);
 		}
 
 		// Checking obligatory args number
-		if(!(args.length >= cmd.args.length)) {
-			return message.reply(`I can't execute that command! I need all the mandatory arguments:\n ${config.prefix}${cmd.name} ${cmd.args.toString().replace(/,/g, ' ')}`);
+		if (!(args.length >= cmd.args.length)) {
+			return message.reply(
+				`I can't execute that command! I need all the mandatory arguments:\n ${
+					config.prefix
+				}${cmd.name} ${cmd.args.toString().replace(/,/g, ' ')}`,
+			);
 		}
 
 		// Calling the
