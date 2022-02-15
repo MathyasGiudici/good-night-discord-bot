@@ -44,3 +44,24 @@ Stopping music in the Voice Channel:
 ## Changelog
 - 1.1.0: Partial resolution (static song loading) of $night and its override
 - 1.1.1: $version command
+
+## Coding
+
+### Installation
+The package manager is _npm_.
+To install the dependencies, run:
+```
+npm install
+```
+
+**Important:** setup the environment variables in the _.env_ file.
+```
+DISCORD_BOT_TOKEN=<token generate with discord development portal>
+```
+
+### Usage
+To run the bot, launch the command:
+```
+npm start
+```
+
