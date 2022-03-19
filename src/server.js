@@ -1,17 +1,31 @@
-const loadMD = '<script src="https://rawcdn.githack.com/oscarmorrison/md-page/master/md-page.js"></script><noscript>';
-const fs = require('fs');
 const express = require('express');
 const server = express();
 
-server.all('/', (req, res)=>{
-	const readme = fs.readFileSync('./README.md');
-	res.setHeader('Content-Type', 'text/html');
-	res.write(loadMD.concat(readme));
-	res.end();
-});
+const serverPort = process.env.PORT || 8080;
 
-function keepAlive() {
-	server.listen(3000, () =>{ console.log('Server is online!');});
+function keepAlive(client) {
+	// looking to the servers
+	const nServers = client.guilds.cache.size;
+	const serversArray = [];
+
+	for(const guild of client.guilds.cache.values()) {
+		serversArray.push(guild.name);
+	}
+
+	// Home response
+	server.get('/', (req, res)=>{
+		res.write('<h1>Goodnight Bot Backend is up!</h1>');
+		res.end();
+	});
+
+	server.get('/servers', (req, res)=>{
+		res.write(`<h1>Connected servers ${nServers}</h1><p>${JSON.stringify(serversArray)}</p>`);
+		res.end();
+	});
+
+	server.listen(serverPort, () => {
+		console.log('[Server]: The server is online!');
+	});
 }
 
 module.exports = keepAlive;

@@ -3,7 +3,7 @@ require('dotenv').config();
 
 // Importing packages
 const fs = require('fs');
-const { Client, Collection } = require('discord.js');
+const { Client, Collection, Intents } = require('discord.js');
 
 // Importing config
 const config = require('./files/config.json');
@@ -15,7 +15,13 @@ const keepAlive = require('./server');
 const roleHelper = require('./utils/role-helper');
 
 // Client and command list creation
-const client = new Client();
+const client = new Client({
+	intents: [
+		Intents.FLAGS.GUILDS,
+		Intents.FLAGS.GUILD_MESSAGES,
+		Intents.FLAGS.DIRECT_MESSAGES,
+	],
+});
 client.commands = new Collection();
 
 // Loading commands
@@ -31,18 +37,15 @@ commandFiles.forEach((value) => {
 
 // Logging ready of the bot
 client.on('ready', () => {
-	// Logging the list of servers the bot is connected to
-	console.log(`Connected to ${client.guilds.cache.size} servers`);
-	for(const guild of client.guilds.cache.values()) {
-		console.log(`Connected to ${guild.name}`);
-	}
+	keepAlive(client);
 
+	console.log('[Bot]: The bot is online!');
 	// Client activity
 	client.user.setActivity(`${config.prefix}night`, { type: 'LISTENING' });
 });
 
 // Checking messages
-client.on('message', (message) => {
+client.on('messageCreate', (message) => {
 	// Checking the prefix
 	if (!message.content.startsWith(config.prefix) || message.author.bot) return;
 
@@ -61,10 +64,10 @@ client.on('message', (message) => {
 		const check = roleHelper(message);
 
 		// Checking no direct messages and roles
-		if (message.channel.type === 'dm') {
+		if (message.channel.type === 'DM') {
 			if (cmd.guildOnly) {return message.reply('I can\'t execute that command inside DMs!');}
 		}
-		else if (!message.member.hasPermission('ADMINISTRATOR') && !check) {
+		else if (!(message.member.permissions.has('ADMINISTRATOR')) && !check) {
 			return message.reply(
 				'You can\'t execute that command! Ask the administrator to enable your role.',
 			);
@@ -88,5 +91,4 @@ client.on('message', (message) => {
 	}
 });
 
-keepAlive();
 client.login(process.env.DISCORD_BOT_TOKEN);
