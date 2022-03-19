@@ -1,4 +1,11 @@
 const ytdl = require('ytdl-core');
+const {
+	AudioPlayerStatus,
+	StreamType,
+	createAudioPlayer,
+	createAudioResource,
+	joinVoiceChannel,
+} = require('@discordjs/voice');
 
 // [ALERT]: You must check before that the user is in a Voice Channel
 const playFromYoutube = async function(message, youtubeVideo) {
@@ -12,17 +19,27 @@ const playFromYoutube = async function(message, youtubeVideo) {
 			return undefined;
 		}
 
-		message.member.voice.channel.join().then(async (connection) => {
-			const stream = ytdl(youtubeVideo, { filter: 'audioonly' })
-				.on('error', e => {
-					console.error(e);
-					currentChannel.leave();
-					reject();
-				});
-			const dispatcher = await connection.play(stream);
-
-			return await dispatcher.on('finish', e => { resolve(); });
+		// Joining the Voice Channel
+		const connection = joinVoiceChannel({
+			channelId: message.member.voice.channel.id,
+			guildId: message.member.voice.channel.guild.id,
+			adapterCreator: message.member.voice.channel.guild.voiceAdapterCreator,
 		});
+
+		const stream = ytdl(youtubeVideo, { filter: 'audioonly' });
+		const resource = createAudioResource(stream, {
+			inputType: StreamType.Arbitrary,
+		});
+		const player = createAudioPlayer();
+
+		player.play(resource);
+		connection.subscribe(player);
+
+		player.on(AudioPlayerStatus.Idle, () => {
+			connection.destroy();
+			resolve();
+		});
+
 	});
 
 	await playerPromise;
