@@ -13,7 +13,7 @@ module.exports = {
 		// Looping a collection
 		for (const [key, value] of message.guild.voiceStates.cache) {
 			if (value.channelId === message.member.voice.channelId) {
-				value.disconnect();
+				value.guild.me.voice.disconnect();
 				return;
 			}
 		}
