@@ -106,8 +106,5 @@ dist
 # Apple File
 .DS_Store
 
-# Package
-package-lock.json
-
 # Database file
 src/files/db.json
